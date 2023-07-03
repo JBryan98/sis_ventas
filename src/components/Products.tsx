@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Product } from "../interfaces/Product.interface";
-import ProductoService from "../services/ProductoService";
+import ProductoService from "../services/ProductService";
 import { RiEditLine, RiDeleteBinLine, RiAddCircleLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import { options } from "../utils/muiDatatableOptions";
 import { Button, Container, Grid } from "@mui/material";
-import MUIDataTable from "mui-datatables";
+import MUIDataTable, { MUIDataTableMeta } from "mui-datatables";
 import DeleteAlert from "./DeleteAlert";
 import { formatCurrency } from "../utils/formatCurrency";
 import { productTableColumns } from "../utils/mui-datatable-columns/productTableColumns";
@@ -51,7 +51,10 @@ export const Products = (): JSX.Element => {
     options: {
       filter: false,
       sort: false,
-      customBodyRender: (value: any, tableMeta: any): JSX.Element => {
+      customBodyRender: (
+        value: any,
+        tableMeta: MUIDataTableMeta
+      ): JSX.Element => {
         const productId = products && products[tableMeta.rowIndex].id;
 
         return (
@@ -59,7 +62,7 @@ export const Products = (): JSX.Element => {
             {productId && (
               <div>
                 <Link
-                  to={`/actualizar-producto/${productId}`}
+                  to={`/productos/actualizar-producto/${productId}`}
                   className="text-white bg-sky-500 py-1 px-3 mr-2 hover:bg-sky-700 hover:cursor-pointer inline-flex items-center rounded"
                 >
                   <RiEditLine className="inline-block mr-0.5 text-xl" />
@@ -87,7 +90,7 @@ export const Products = (): JSX.Element => {
       return (
         <>
           <Button
-            onClick={() => navigate("/crear-producto")}
+            onClick={() => navigate("/productos/crear-producto")}
             variant="contained"
             color="success"
           >
