@@ -1,6 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
 import LayoutPublic from "../Layout/MainLayout";
-import { ClientesPage, FormularioClientePage, FormularioProductoPage, Home, NotFound, ProductosPage } from "../pages";
+import {
+  ClientesPage,
+  FacturasClientePage,
+  FormularioClientePage,
+  FormularioProductoPage,
+  Home,
+  NotFound,
+  ProductosPage,
+} from "../pages";
 
 export const router = createBrowserRouter([
   {
@@ -37,6 +45,10 @@ export const router = createBrowserRouter([
       {
         path: "clientes/actualizar-cliente/:customerId",
         element: <FormularioClientePage />,
+      },
+      {
+        path: "clientes/:customerId/facturas",
+        element: <FacturasClientePage />,
       },
     ],
   },

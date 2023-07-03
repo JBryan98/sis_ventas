@@ -58,8 +58,9 @@ export const Products = (): JSX.Element => {
                 <Link
                   to={`/productos/actualizar-producto/${productId}`}
                   className="text-white bg-sky-500 py-1 px-3 mr-2 hover:bg-sky-700 hover:cursor-pointer inline-flex items-center rounded"
+                  title="Editar"
                 >
-                  <RiEditLine className="inline-block mr-0.5 text-xl" />
+                  <RiEditLine className="inline-block mr-0.5 text-xl" title="Editar"/>
                 </Link>
                 <button
                   onClick={() => {
@@ -67,8 +68,9 @@ export const Products = (): JSX.Element => {
                     setId(productId);
                   }}
                   className="text-white bg-red-500 py-1 px-3 hover:cursor-pointer hover:bg-red-700 inline-flex items-center rounded"
+                  title="Eliminar"
                 >
-                  <RiDeleteBinLine className="inline-block mr-0.5 text-xl" />
+                  <RiDeleteBinLine className="inline-block mr-0.5 text-xl" title="Eliminar"/>
                 </button>
               </div>
             )}

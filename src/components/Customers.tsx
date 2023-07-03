@@ -1,4 +1,5 @@
 import { useAlert } from "../hooks/useAlert";
+import { ImClipboard } from "react-icons/im";
 import { RiEditLine, RiDeleteBinLine, RiAddCircleLine } from "react-icons/ri";
 import { Customer } from "../interfaces/Customer.interface";
 import { useEffect, useState } from "react";
@@ -56,10 +57,18 @@ export const Customers = (): JSX.Element => {
             {customerId && (
               <div>
                 <Link
+                  title="Ver Facturas"
+                  to={`/clientes/${customerId}/facturas`}
+                  className="text-white bg-indigo-500 py-1 px-3 mr-2 hover:bg-indigo-700 hover:cursor-pointer inline-flex items-center rounded"
+                >
+                  <ImClipboard className="inline-block mr-0.5 text-xl" title="Ver Facturas"/>
+                </Link>
+                <Link
+                  title="Editar"
                   to={`/clientes/actualizar-cliente/${customerId}`}
                   className="text-white bg-sky-500 py-1 px-3 mr-2 hover:bg-sky-700 hover:cursor-pointer inline-flex items-center rounded"
                 >
-                  <RiEditLine className="inline-block mr-0.5 text-xl" />
+                  <RiEditLine className="inline-block mr-0.5 text-xl" title="Editar"/>
                 </Link>
                 <button
                   onClick={() => {
@@ -67,8 +76,9 @@ export const Customers = (): JSX.Element => {
                     setCustomerId(customerId);
                   }}
                   className="text-white bg-red-500 py-1 px-3 hover:cursor-pointer hover:bg-red-700 inline-flex items-center rounded"
+                  title="Eliminar"
                 >
-                  <RiDeleteBinLine className="inline-block mr-0.5 text-xl" />
+                  <RiDeleteBinLine className="inline-block mr-0.5 text-xl" title="Eliminar"/>
                 </button>
               </div>
             )}
