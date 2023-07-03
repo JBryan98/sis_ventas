@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import LayoutPublic from "../Layout/MainLayout";
 import {
   ClientesPage,
+  DetallesFacturaPage,
   FacturasClientePage,
   FormularioClientePage,
   FormularioProductoPage,
@@ -50,6 +51,10 @@ export const router = createBrowserRouter([
         path: "clientes/:customerId/facturas",
         element: <FacturasClientePage />,
       },
+      {
+        path: "clientes/:customerId/factura/:billId",
+        element: <DetallesFacturaPage/>
+      }
     ],
   },
 ]);
