@@ -9,24 +9,18 @@ import MUIDataTable, { MUIDataTableMeta } from "mui-datatables";
 import DeleteAlert from "./DeleteAlert";
 import { formatCurrency } from "../utils/formatCurrency";
 import { productTableColumns } from "../utils/mui-datatable-columns/productTableColumns";
+import { useAlert } from "../hooks/useAlert";
 
 export const Products = (): JSX.Element => {
   const [products, setProducts] = useState<Product[] | null>(null);
-  const [open, setOpen] = useState(false);
   const [id, setId] = useState<number | null>(null);
+  const {isOpen, handleOpen, handleClose} = useAlert();
   const navigate = useNavigate();
 
   useEffect(() => {
     ProductoService.getAllProducts().then((response) => setProducts(response));
   }, []);
 
-  const handleOpen = (): void => {
-    setOpen(true);
-  };
-
-  const handleClose = (): void => {
-    setOpen(false);
-  };
 
   const deleteProduct = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -134,7 +128,7 @@ export const Products = (): JSX.Element => {
         <DeleteAlert
           deleteService={deleteProduct}
           handleClose={handleClose}
-          open={open}
+          open={isOpen}
           id={id}
         />
       )}
