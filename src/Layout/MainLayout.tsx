@@ -9,7 +9,7 @@ import { FaReact } from "react-icons/fa";
 import { SiSpringboot } from "react-icons/si";
 import viteLogo from '/vite.svg'
 
-const LayoutPublic = () => {
+const LayoutPublic = (): JSX.Element => {
   const [open, setOpen] = useState(false);
 
   return (

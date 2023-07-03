@@ -22,7 +22,7 @@ interface ProductFormValues {
   categoria: Category;
 }
 
-export const ProductForm = () => {
+export const ProductForm = (): JSX.Element => {
   const { productId } = useParams();
   const navigate = useNavigate();
   const [categories, setCategories] = useState<Category[] | null>(null);

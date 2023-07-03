@@ -10,7 +10,7 @@ import { options } from "../utils/muiDatatableOptions";
 import { customerTableColumns } from "../utils/mui-datatable-columns/customerTableColumns";
 import DeleteAlert from "./DeleteAlert";
 
-export const Customers = () => {
+export const Customers = (): JSX.Element => {
   const [customers, setCustomers] = useState<Customer[] | null>(null);
   const { isOpen, handleOpen, handleClose } = useAlert();
   const [customerId, setCustomerId] = useState<number | null>(null);
@@ -121,7 +121,7 @@ export const Customers = () => {
       </Grid>
       {/*Se creo el state "id" para poder acceder al id desde fuera del customBodyRender. 
         La razón fue para evitar el fondo negro que daba el componente DeleteAlert,
-    (Este es un comportamiento extraño del componente Dialog de MUI)
+    (Este es un comportamiento extraño del componente Dialog de MUI cuando se coloca dentro de un contenedor que no sea el principal del componente)
  https://stackoverflow.com/questions/46946282/dialog-box-in-material-ui-opens-with-a-weird-gray-background
   */}
       {customerId && (

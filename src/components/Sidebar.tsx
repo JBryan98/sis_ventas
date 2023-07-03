@@ -12,7 +12,7 @@ interface Props {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Sidebar = ({open, setOpen}: Props) => {
+const Sidebar = ({open, setOpen}: Props): JSX.Element => {
   const menus = [
     { name: "categorias", link: "/categorias", icon: MdOutlineDashboard },
     { name: "productos", link: "/productos", icon: FiShoppingCart },

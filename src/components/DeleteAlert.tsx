@@ -16,7 +16,7 @@ interface Props {
   id: number;
 }
 
-const DeleteAlert = ({ deleteService, handleClose, open, id }: Props) => {
+const DeleteAlert = ({ deleteService, handleClose, open, id }: Props): JSX.Element => {
   return (
     <div>
       <Dialog

@@ -1,6 +1,6 @@
 import { Link, useRouteError } from "react-router-dom";
 
-export const NotFound = () => {
+export const NotFound = (): JSX.Element => {
   const error = useRouteError();
 
   return (

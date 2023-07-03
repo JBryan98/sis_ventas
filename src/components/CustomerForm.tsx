@@ -20,7 +20,7 @@ interface CustomerFormValues {
   telefono: string;
 }
 
-export const CustomerForm = () => {
+export const CustomerForm = (): JSX.Element => {
   const { customerId } = useParams();
   const navigate = useNavigate();
 

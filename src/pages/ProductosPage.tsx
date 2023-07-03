@@ -1,6 +1,6 @@
 import { Products } from "../components/Products"
 
-export const ProductosPage = () => {
+export const ProductosPage = (): JSX.Element => {
   return (
     <div>
       <Products/>
