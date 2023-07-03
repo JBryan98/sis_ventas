@@ -10,17 +10,21 @@ import DeleteAlert from "./DeleteAlert";
 import { formatCurrency } from "../utils/formatCurrency";
 import { productTableColumns } from "../utils/mui-datatable-columns/productTableColumns";
 import { useAlert } from "../hooks/useAlert";
+import { Spinner } from "./Spinner";
 
 export const Products = (): JSX.Element => {
   const [products, setProducts] = useState<Product[] | null>(null);
   const [id, setId] = useState<number | null>(null);
-  const {isOpen, handleOpen, handleClose} = useAlert();
+  const { isOpen, handleOpen, handleClose } = useAlert();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    ProductoService.getAllProducts().then((response) => setProducts(response));
+    setIsLoading(true);
+    ProductoService.getAllProducts()
+      .then((response) => setProducts(response))
+      .finally(() => setIsLoading(false));
   }, []);
-
 
   const deleteProduct = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -60,7 +64,10 @@ export const Products = (): JSX.Element => {
                   className="text-white bg-sky-500 py-1 px-3 mr-2 hover:bg-sky-700 hover:cursor-pointer inline-flex items-center rounded"
                   title="Editar"
                 >
-                  <RiEditLine className="inline-block mr-0.5 text-xl" title="Editar"/>
+                  <RiEditLine
+                    className="inline-block mr-0.5 text-xl"
+                    title="Editar"
+                  />
                 </Link>
                 <button
                   onClick={() => {
@@ -70,7 +77,10 @@ export const Products = (): JSX.Element => {
                   className="text-white bg-red-500 py-1 px-3 hover:cursor-pointer hover:bg-red-700 inline-flex items-center rounded"
                   title="Eliminar"
                 >
-                  <RiDeleteBinLine className="inline-block mr-0.5 text-xl" title="Eliminar"/>
+                  <RiDeleteBinLine
+                    className="inline-block mr-0.5 text-xl"
+                    title="Eliminar"
+                  />
                 </button>
               </div>
             )}
@@ -82,6 +92,17 @@ export const Products = (): JSX.Element => {
 
   const productTableOptions = {
     ...options,
+    textLabels: {
+      ...options.textLabels,
+      body: {
+        ...options.textLabels?.body,
+        noMatch: isLoading ? (
+          <Spinner />
+        ) : (
+          'Lo sentimos, no se encontraron registros coincidentes"'
+        ),
+      },
+    },
     customToolbar: () => {
       return (
         <>
@@ -102,10 +123,9 @@ export const Products = (): JSX.Element => {
     <div>
       <Grid item xs={6}>
         <Container fixed sx={{ paddingTop: 5 }}>
-          {products && (
             <MUIDataTable
               title={"Tabla Productos"}
-              data={products.map((product) => {
+              data={!products ? [] : products.map((product) => {
                 return [
                   product.id,
                   product.nombre,
@@ -118,7 +138,6 @@ export const Products = (): JSX.Element => {
               columns={[...productTableColumns, columnActions]}
               options={productTableOptions}
             />
-          )}
         </Container>
       </Grid>
       {/*Se creo el state "id" para poder acceder al id desde fuera del customBodyRender. 

@@ -10,17 +10,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { options } from "../utils/muiDatatableOptions";
 import { customerTableColumns } from "../utils/mui-datatable-columns/customerTableColumns";
 import DeleteAlert from "./DeleteAlert";
+import { Spinner } from "./Spinner";
 
 export const Customers = (): JSX.Element => {
   const [customers, setCustomers] = useState<Customer[] | null>(null);
   const { isOpen, handleOpen, handleClose } = useAlert();
   const [customerId, setCustomerId] = useState<number | null>(null);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    CustomerService.getAllCustomers().then((response) =>
-      setCustomers(response)
-    );
+    setIsLoading(true);
+    CustomerService.getAllCustomers()
+      .then((response) => setCustomers(response))
+      .finally(() => setIsLoading(false));
   }, []);
 
   const deleteCustomer = (
@@ -61,14 +64,20 @@ export const Customers = (): JSX.Element => {
                   to={`/clientes/${customerId}/facturas`}
                   className="text-white bg-indigo-500 py-1 px-3 mr-2 hover:bg-indigo-700 hover:cursor-pointer inline-flex items-center rounded"
                 >
-                  <ImClipboard className="inline-block mr-0.5 text-xl" title="Ver Facturas"/>
+                  <ImClipboard
+                    className="inline-block mr-0.5 text-xl"
+                    title="Ver Facturas"
+                  />
                 </Link>
                 <Link
                   title="Editar"
                   to={`/clientes/actualizar-cliente/${customerId}`}
                   className="text-white bg-sky-500 py-1 px-3 mr-2 hover:bg-sky-700 hover:cursor-pointer inline-flex items-center rounded"
                 >
-                  <RiEditLine className="inline-block mr-0.5 text-xl" title="Editar"/>
+                  <RiEditLine
+                    className="inline-block mr-0.5 text-xl"
+                    title="Editar"
+                  />
                 </Link>
                 <button
                   onClick={() => {
@@ -78,7 +87,10 @@ export const Customers = (): JSX.Element => {
                   className="text-white bg-red-500 py-1 px-3 hover:cursor-pointer hover:bg-red-700 inline-flex items-center rounded"
                   title="Eliminar"
                 >
-                  <RiDeleteBinLine className="inline-block mr-0.5 text-xl" title="Eliminar"/>
+                  <RiDeleteBinLine
+                    className="inline-block mr-0.5 text-xl"
+                    title="Eliminar"
+                  />
                 </button>
               </div>
             )}
@@ -90,6 +102,17 @@ export const Customers = (): JSX.Element => {
 
   const customerTableOptions = {
     ...options,
+    textLabels: {
+      ...options.textLabels,
+      body: {
+        ...options.textLabels?.body,
+        noMatch: isLoading ? (
+          <Spinner />
+        ) : (
+          'Lo sentimos, no se encontraron registros coincidentes"'
+        ),
+      },
+    },
     customToolbar: () => {
       return (
         <>
@@ -110,23 +133,27 @@ export const Customers = (): JSX.Element => {
     <div>
       <Grid item xs={6}>
         <Container fixed sx={{ paddingTop: 5 }}>
-          {customers && (
-            <MUIDataTable
-              title={"Tabla Clientes"}
-              data={customers.map((customer) => {
-                return [
-                  customer.id,
-                  customer.nombre,
-                  customer.apellido,
-                  customer.email,
-                  customer.telefono,
-                  customer.fechaCreacion,
-                ];
-              })}
-              columns={[...customerTableColumns, columnActions]}
-              options={customerTableOptions}
-            />
-          )}
+          {/* {customers && ( */}
+          <MUIDataTable
+            title={"Tabla Clientes"}
+            data={
+              !customers
+                ? []
+                : customers.map((customer) => {
+                    return [
+                      customer.id,
+                      customer.nombre,
+                      customer.apellido,
+                      customer.email,
+                      customer.telefono,
+                      customer.fechaCreacion,
+                    ];
+                  })
+            }
+            columns={[...customerTableColumns, columnActions]}
+            options={customerTableOptions}
+          />
+          {/* )} */}
         </Container>
       </Grid>
       {/*Se creo el state "id" para poder acceder al id desde fuera del customBodyRender. 

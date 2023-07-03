@@ -17,6 +17,7 @@ import { customerBillsTableColumn } from "../utils/mui-datatable-columns/custome
 import { options } from "../utils/muiDatatableOptions";
 import { formatCurrency } from "../utils/formatCurrency";
 import DeleteAlert from "./DeleteAlert";
+import { Spinner } from "./Spinner";
 
 export const CustomerBills = (): JSX.Element => {
   const { customerId } = useParams();
@@ -107,7 +108,9 @@ export const CustomerBills = (): JSX.Element => {
                 <Button
                   variant="contained"
                   color="secondary"
-                  onClick={() => navigate(`/clientes/${customerId}/crear-factura`)}
+                  onClick={() =>
+                    navigate(`/clientes/${customerId}/crear-factura`)
+                  }
                   sx={{ marginRight: 1 }}
                 >
                   Crear Factura
@@ -122,41 +125,47 @@ export const CustomerBills = (): JSX.Element => {
             }
           />
           <hr />
-          <CardContent>
-            <Typography variant="subtitle2" gutterBottom>
-              Nombre Completo:
-            </Typography>
-            <Typography variant="overline" gutterBottom>
-              {customer?.nombre + " " + customer?.apellido}
-            </Typography>
-            <Typography variant="subtitle2" gutterBottom>
-              Email:
-            </Typography>
-            <Typography variant="overline" gutterBottom>
-              {customer?.email}
-            </Typography>
-            <Typography variant="subtitle2" gutterBottom>
-              Teléfono:
-            </Typography>
-            <Typography variant="overline" gutterBottom>
-              {customer?.telefono}
-            </Typography>
-          </CardContent>
-          {customer?.facturas && (
-            <MUIDataTable
-              title={"Facturas"}
-              columns={[...customerBillsTableColumn, actionsColumn]}
-              options={options}
-              data={customer.facturas.map((factura) => {
-                return [
-                  factura.id,
-                  factura.fechaEmision,
-                  formatCurrency(factura.subTotal),
-                  formatCurrency(factura.igv),
-                  formatCurrency(factura.total),
-                ];
-              })}
-            />
+          {customer ? (
+            <>
+              <CardContent>
+                <Typography variant="subtitle2" gutterBottom>
+                  Nombre Completo:
+                </Typography>
+                <Typography variant="overline" gutterBottom>
+                  {customer.nombre + " " + customer.apellido}
+                </Typography>
+                <Typography variant="subtitle2" gutterBottom>
+                  Email:
+                </Typography>
+                <Typography variant="overline" gutterBottom>
+                  {customer.email}
+                </Typography>
+                <Typography variant="subtitle2" gutterBottom>
+                  Teléfono:
+                </Typography>
+                <Typography variant="overline" gutterBottom>
+                  {customer.telefono}
+                </Typography>
+              </CardContent>
+              {customer.facturas && (
+                <MUIDataTable
+                  title={"Facturas"}
+                  columns={[...customerBillsTableColumn, actionsColumn]}
+                  options={options}
+                  data={customer.facturas.map((factura) => {
+                    return [
+                      factura.id,
+                      factura.fechaEmision,
+                      formatCurrency(factura.subTotal),
+                      formatCurrency(factura.igv),
+                      formatCurrency(factura.total),
+                    ];
+                  })}
+                />
+              )}
+            </>
+          ) : (
+            <Spinner />
           )}
         </Card>
       </Container>

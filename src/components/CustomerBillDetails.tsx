@@ -20,6 +20,7 @@ import { MdEmail } from "react-icons/md";
 import { BillDetails } from "../interfaces/Bill.interface";
 import BillService from "../services/BillService";
 import { formatCurrency } from "../utils/formatCurrency";
+import { Spinner } from "./Spinner";
 
 export const CustomerBillDetails = (): JSX.Element => {
   const { customerId, billId } = useParams();
@@ -123,7 +124,7 @@ export const CustomerBillDetails = (): JSX.Element => {
               </TableContainer>
             </>
           ) : (
-            "Cargando......"
+            <Spinner />
           )}
         </Card>
       </Container>
