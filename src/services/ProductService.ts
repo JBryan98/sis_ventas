@@ -23,7 +23,7 @@ class ProductoService {
 
   async createProduct(product: Product): Promise<Product> {
     try {
-      const response = await axios.post<Product>(`${PRODUCT_URL}`, product);
+      const response = await axios.post<Product>(PRODUCT_URL, product);
       return response.data;
     } catch (error) {
       throw new Error(`No se pudo crear el producto`);

@@ -1,7 +1,7 @@
-export type Category = {
+export interface Category {
   id: number;
   nombre: string;
-};
+}
 
 export interface Product {
   id?: number;

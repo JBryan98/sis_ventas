@@ -38,7 +38,23 @@ export const ProductForm = () => {
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: productValidationSchema,
-    onSubmit: (values) => alert(JSON.stringify(values, null, 2)),
+    onSubmit: (values) => {
+      const product = {
+        ...values,
+        precio: Number(values.precio),
+        stock: Number(values.stock)
+      }
+      
+      if(productId){
+        ProductService
+        .updateProduct(Number(productId), product)
+        .then(() => navigate("/productos"))
+      } else{
+        ProductService
+        .createProduct(product)
+        .then(() => navigate("/productos"))
+      }
+    }
   });
 
   useEffect(() => {
@@ -49,20 +65,18 @@ export const ProductForm = () => {
 
   useEffect(() => {
     if (productId) {
-      ProductService.getProductById(Number(productId)).then(
-        (response: Product) => {
-          formik.setValues({
-            ...initialValues,
-            nombre: response.nombre,
-            precio: response.precio,
-            stock: response.stock,
-            categoria: {
-              id: response.categoria.id,
-              nombre: response.categoria.nombre,
-            },
-          });
-        }
-      );
+      ProductService.getProductById(Number(productId)).then((response: Product) => {
+        formik.setValues({
+          ...initialValues,
+          nombre: response.nombre,
+          precio: response.precio,
+          stock: response.stock,
+          categoria: {
+            id: response.categoria.id,
+            nombre: response.categoria.nombre,
+          },
+        });
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId]);
