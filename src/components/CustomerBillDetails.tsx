@@ -28,7 +28,7 @@ export const CustomerBillDetails = (): JSX.Element => {
   const [bill, setBill] = useState<BillDetails | null>(null);
 
   useEffect(() => {
-    BillService.getBillById(Number(billId)).then((response) =>
+    BillService.getBillById(Number(billId)).then((response: BillDetails) =>
       setBill(response)
     );
   }, [billId]);

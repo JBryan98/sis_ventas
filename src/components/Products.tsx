@@ -22,7 +22,7 @@ export const Products = (): JSX.Element => {
   useEffect(() => {
     setIsLoading(true);
     ProductoService.getAllProducts()
-      .then((response) => setProducts(response))
+      .then((response: Product[]) => setProducts(response))
       .finally(() => setIsLoading(false));
   }, []);
 

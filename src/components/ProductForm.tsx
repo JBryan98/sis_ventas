@@ -58,7 +58,7 @@ export const ProductForm = (): JSX.Element => {
   });
 
   useEffect(() => {
-    CategoryService.getAllProducts().then((response) =>
+    CategoryService.getAllProducts().then((response: Category[]) =>
       setCategories(response)
     );
   }, []);

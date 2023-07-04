@@ -27,7 +27,7 @@ export const CustomerBills = (): JSX.Element => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    CustomerService.getCustomerById(Number(customerId)).then((response) =>
+    CustomerService.getCustomerById(Number(customerId)).then((response: Customer) =>
       setCustomer(response)
     );
   }, [customerId]);

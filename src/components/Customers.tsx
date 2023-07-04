@@ -22,7 +22,7 @@ export const Customers = (): JSX.Element => {
   useEffect(() => {
     setIsLoading(true);
     CustomerService.getAllCustomers()
-      .then((response) => setCustomers(response))
+      .then((response: Customer[]) => setCustomers(response))
       .finally(() => setIsLoading(false));
   }, []);
 
