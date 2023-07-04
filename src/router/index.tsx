@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import LayoutPublic from "../Layout/MainLayout";
 import {
+  CategoriasPage,
   ClientesPage,
   DetallesFacturaPage,
   FacturasClientePage,
@@ -20,6 +21,11 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      //Categorias
+      {
+        path: "categorias",
+        element: <CategoriasPage/>
       },
       //Productos
       {

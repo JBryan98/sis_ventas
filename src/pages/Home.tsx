@@ -48,7 +48,7 @@ export const Home = (): JSX.Element => {
         cardTheme: cardStyles(
           "bg-green-200",
           "text-green-900",
-          "border-green-900"
+          "border-green-600"
         ),
         iconTheme: iconStyles("bg-green-600"),
       },
@@ -61,7 +61,7 @@ export const Home = (): JSX.Element => {
         cardTheme: cardStyles(
           "bg-blue-200",
           "text-blue-900",
-          "border-blue-900"
+          "border-blue-600"
         ),
         iconTheme: iconStyles("bg-blue-600"),
       },
@@ -74,7 +74,7 @@ export const Home = (): JSX.Element => {
         cardTheme: cardStyles(
           "bg-indigo-200",
           "text-indigo-900",
-          "border-indigo-900"
+          "border-indigo-600"
         ),
         iconTheme: iconStyles("bg-indigo-600"),
       },
@@ -87,7 +87,7 @@ export const Home = (): JSX.Element => {
         cardTheme: cardStyles(
           "bg-fuchsia-200",
           "text-fuchsia-900",
-          "border-fuchsia-900"
+          "border-fuchsia-600"
         ),
         iconTheme: iconStyles("bg-fuchsia-600"),
       },
@@ -100,16 +100,18 @@ export const Home = (): JSX.Element => {
     <>
       <div>
         Home
-        {cards.map((card, i) => (
-          <DashboardCard
-            key={i}
-            title={card.title}
-            label={card.label}
-            icon={card.icon}
-            cardTheme={card.theme.cardTheme}
-            iconTheme={card.theme.iconTheme}
-          />
-        ))}
+        <div className="flex flex-wrap justify-center gap-3">
+          {cards.map((card, i) => (
+            <DashboardCard
+              key={i}
+              title={card.title}
+              label={card.label}
+              icon={card.icon}
+              cardTheme={card.theme.cardTheme}
+              iconTheme={card.theme.iconTheme}
+            />
+          ))}
+        </div>
         <div className="flex justify-center gap-8 flex-wrap">
           <Top5Customers />
           <Top5Products />

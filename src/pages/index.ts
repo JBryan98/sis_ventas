@@ -1,3 +1,5 @@
+export { CategoriasPage } from "./CategoriasPage";
+
 export { DetallesFacturaPage } from "./DetallesFacturaPage";
 
 export { FacturasClientePage } from "./FacturasClientePage";

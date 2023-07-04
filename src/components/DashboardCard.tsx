@@ -10,7 +10,6 @@ interface Props {
 
 export const DashboardCard = ({ title, label, icon, cardTheme, iconTheme }: Props) => {
   return (
-    <div className="flex flex-wrap justify-center gap-3">
         <div className={cardTheme}>
           <div>
             <Typography variant="button">{title}</Typography>
@@ -18,6 +17,5 @@ export const DashboardCard = ({ title, label, icon, cardTheme, iconTheme }: Prop
           </div>
           <div className={iconTheme}>{icon}</div>
         </div>
-    </div>
   );
 };
