@@ -1,4 +1,4 @@
-export const customerBillsTableColumn = [
+export const customerInvoicesTableColumn = [
     {
       name: "id",
       label: "Factura id",

@@ -11,7 +11,7 @@ interface Items {
     }
 }
 
-export interface BillDetails {
+export interface InvoiceDetails {
     id: number,
     fechaEmision: number,
     subTotal: number,

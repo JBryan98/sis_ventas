@@ -3,6 +3,7 @@ import LayoutPublic from "../Layout/MainLayout";
 import {
   CategoriasPage,
   ClientesPage,
+  CrearFacturaPage,
   DetallesFacturaPage,
   FacturasClientePage,
   FormularioClientePage,
@@ -22,12 +23,12 @@ export const router = createBrowserRouter([
         index: true,
         element: <Home />,
       },
-      //Categorias
+      //CATEGORIAS
       {
         path: "categorias",
         element: <CategoriasPage/>
       },
-      //Productos
+      //PRODUCTOS
       {
         path: "productos",
         element: <ProductosPage />,
@@ -40,7 +41,7 @@ export const router = createBrowserRouter([
         path: "productos/actualizar-producto/:productId",
         element: <FormularioProductoPage />,
       },
-      //Clientes
+      //CLIENTES
       {
         path: "clientes",
         element: <ClientesPage />,
@@ -58,9 +59,15 @@ export const router = createBrowserRouter([
         element: <FacturasClientePage />,
       },
       {
-        path: "clientes/:customerId/factura/:billId",
+        path: "clientes/:customerId/factura/:invoiceId",
         element: <DetallesFacturaPage/>
-      }
+      },
+
+      //FACTURAS
+      {
+        path: "clientes/:customerId/crear-factura",
+        element: <CrearFacturaPage />,
+      },
     ],
   },
 ]);

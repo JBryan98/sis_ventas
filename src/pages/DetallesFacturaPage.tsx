@@ -1,9 +1,9 @@
-import { CustomerBillDetails } from "../components/CustomerBillDetails";
+import { CustomerInvoiceDetails } from "../components/CustomerInvoiceDetails";
 
-export const DetallesFacturaPage = () => {
+export const DetallesFacturaPage = (): JSX.Element => {
   return (
     <div>
-      <CustomerBillDetails />
+      <CustomerInvoiceDetails />
     </div>
   );
 };

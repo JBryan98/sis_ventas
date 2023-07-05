@@ -1,9 +1,9 @@
-import { CustomerBills } from "../components/CustomerBills";
+import { CustomerInvoices } from "../components/CustomerInvoices";
 
 export const FacturasClientePage = (): JSX.Element => {
   return (
     <div>
-      <CustomerBills />
+      <CustomerInvoices />
     </div>
   );
 };

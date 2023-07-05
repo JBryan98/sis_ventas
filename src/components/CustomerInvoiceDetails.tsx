@@ -17,28 +17,28 @@ import {
 } from "@mui/material";
 import { FaUserAlt, FaPhoneAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import { BillDetails } from "../interfaces/Bill.interface";
-import BillService from "../services/BillService";
+import { InvoiceDetails } from "../interfaces/Invoice.interface";
 import { formatCurrency } from "../utils/formatCurrency";
 import { Spinner } from "./Spinner";
+import InvoiceService from "../services/InvoiceService";
 
-export const CustomerBillDetails = (): JSX.Element => {
-  const { customerId, billId } = useParams();
+export const CustomerInvoiceDetails = (): JSX.Element => {
+  const { customerId, invoiceId } = useParams();
   const navigate = useNavigate();
-  const [bill, setBill] = useState<BillDetails | null>(null);
+  const [invoice, setInvoice] = useState<InvoiceDetails | null>(null);
 
   useEffect(() => {
-    BillService.getBillById(Number(billId)).then((response: BillDetails) =>
-      setBill(response)
+    InvoiceService.getInvoiceById(Number(invoiceId)).then((response: InvoiceDetails) =>
+    setInvoice(response)
     );
-  }, [billId]);
+  }, [invoiceId]);
 
   return (
     <div>
       <Container fixed sx={{ paddingTop: 5 }}>
         <Card>
           <CardHeader
-            title={`Detalle de factura ${billId}`}
+            title={`Detalle de factura ${invoiceId}`}
             sx={{
               backgroundColor: "#212121",
               color: "#fff",
@@ -53,20 +53,20 @@ export const CustomerBillDetails = (): JSX.Element => {
             }
           />
           <hr />
-          {bill ? (
+          {invoice ? (
             <>
               <CardContent>
                 <Typography variant="button" display="block" gutterBottom>
                   <FaUserAlt className="inline-block align-baseline text-sm" />
-                  {" " + bill.cliente?.nombre + " " + bill.cliente?.apellido}
+                  {" " + invoice.cliente?.nombre + " " + invoice.cliente?.apellido}
                 </Typography>
                 <Typography variant="button" display="block" gutterBottom>
                   <FaPhoneAlt className="inline-block mb-1 text-sm" />
-                  {" " + bill.cliente?.telefono}
+                  {" " + invoice.cliente?.telefono}
                 </Typography>
                 <Typography variant="button" gutterBottom>
                   <MdEmail className="inline-block text-base mb-1" />
-                  {" " + bill.cliente?.email}
+                  {" " + invoice.cliente?.email}
                 </Typography>
               </CardContent>
               <TableContainer component={Paper}>
@@ -88,7 +88,7 @@ export const CustomerBillDetails = (): JSX.Element => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {bill.items.map((item) => (
+                    {invoice.items.map((item) => (
                       <TableRow key={item.id} hover>
                         <TableCell>{item.producto.nombre}</TableCell>
                         <TableCell>
@@ -105,19 +105,19 @@ export const CustomerBillDetails = (): JSX.Element => {
                       <TableCell colSpan={2} align="center">
                         <Typography variant="button">Subtotal</Typography>{" "}
                       </TableCell>
-                      <TableCell>{formatCurrency(bill?.subTotal)}</TableCell>
+                      <TableCell>{formatCurrency(invoice.subTotal)}</TableCell>
                     </TableRow>
                     <TableRow hover>
                       <TableCell colSpan={2} align="center">
                         <Typography variant="button">IGV 18%</Typography>{" "}
                       </TableCell>
-                      <TableCell>{formatCurrency(bill?.igv)}</TableCell>
+                      <TableCell>{formatCurrency(invoice.igv)}</TableCell>
                     </TableRow>
                     <TableRow hover>
                       <TableCell colSpan={2} align="center">
                         <Typography variant="button">Total</Typography>{" "}
                       </TableCell>
-                      <TableCell>{formatCurrency(bill?.total)}</TableCell>
+                      <TableCell>{formatCurrency(invoice.total)}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>

@@ -11,38 +11,38 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAlert } from "../hooks/useAlert";
 import CustomerService from "../services/CustomerService";
 import { Customer } from "../interfaces/Customer.interface";
-import BillService from "../services/BillService";
+import InvoiceService from "../services/InvoiceService";
 import MUIDataTable, { MUIDataTableMeta } from "mui-datatables";
-import { customerBillsTableColumn } from "../utils/mui-datatable-columns/customerBillsTableColumns";
+import { customerInvoicesTableColumn } from "../utils/mui-datatable-columns/customerInvoicesTableColumns";
 import { options } from "../utils/muiDatatableOptions";
 import { formatCurrency } from "../utils/formatCurrency";
 import DeleteAlert from "./DeleteAlert";
 import { Spinner } from "./Spinner";
 
-export const CustomerBills = (): JSX.Element => {
+export const CustomerInvoices = (): JSX.Element => {
   const { customerId } = useParams();
   const [customer, setCustomer] = useState<Customer | null>(null);
   const { isOpen, handleOpen, handleClose } = useAlert();
-  const [billId, setBillId] = useState<number | null>(null);
+  const [invoiceId, setInvoiceId] = useState<number | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    CustomerService.getCustomerById(Number(customerId)).then((response: Customer) =>
-      setCustomer(response)
+    CustomerService.getCustomerById(Number(customerId)).then(
+      (response: Customer) => setCustomer(response)
     );
   }, [customerId]);
 
-  const deleteBillById = (
+  const deleteInvoiceById = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     id: number
   ) => {
     e.preventDefault();
-    BillService.deleteBillById(id).then(() => {
+    InvoiceService.deleteInvoiceById(id).then(() => {
       if (customer) {
-        const billsUpdated = customer.facturas?.filter(
+        const invoicesUpdated = customer.facturas?.filter(
           (factura) => factura.id !== id
         );
-        setCustomer({ ...customer, facturas: billsUpdated });
+        setCustomer({ ...customer, facturas: invoicesUpdated });
       }
     });
   };
@@ -79,7 +79,7 @@ export const CustomerBills = (): JSX.Element => {
                   color="error"
                   onClick={() => {
                     handleOpen();
-                    setBillId(facturaId);
+                    setInvoiceId(facturaId);
                   }}
                   size="small"
                 >
@@ -150,7 +150,7 @@ export const CustomerBills = (): JSX.Element => {
               {customer.facturas && (
                 <MUIDataTable
                   title={"Facturas"}
-                  columns={[...customerBillsTableColumn, actionsColumn]}
+                  columns={[...customerInvoicesTableColumn, actionsColumn]}
                   options={options}
                   data={customer.facturas.map((factura) => {
                     return [
@@ -169,12 +169,12 @@ export const CustomerBills = (): JSX.Element => {
           )}
         </Card>
       </Container>
-      {billId && (
+      {invoiceId && (
         <DeleteAlert
-          deleteService={deleteBillById}
+          deleteService={deleteInvoiceById}
           handleClose={handleClose}
           open={isOpen}
-          id={billId}
+          id={invoiceId}
         />
       )}
     </div>

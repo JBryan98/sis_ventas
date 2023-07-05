@@ -1,4 +1,4 @@
-export interface Bill {
+export interface Invoice {
     id: number,
     fechaEmision: string,
     subTotal: number,
@@ -13,5 +13,5 @@ export interface Customer {
     email: string,
     telefono: string,
     fechaCreacion?: string,
-    facturas?: Bill[]
+    facturas?: Invoice[]
 }
