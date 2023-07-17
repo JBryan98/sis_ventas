@@ -8,7 +8,8 @@ class CategoryService {
       const response = await axios.get<Category[]>(CATEGORY_URL);
       return response.data;
     } catch (error) {
-      throw new Error("No se pudieron obtener los productos");
+      console.log(error)
+      throw new Error("No se pudieron obtener las categorias");
     }
   }
 

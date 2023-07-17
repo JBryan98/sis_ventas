@@ -17,18 +17,24 @@ export const Top5Products = (): JSX.Element => {
   const [top5Products, setTop5Products] = useState<
     Top5ProductsByMonth[] | null
   >(null);
-  useEffect(() => {
-    DashboardService.getTop5ProductsByMonth(6, 2023).then(
-      (response: Top5ProductsByMonth[]) => setTop5Products(response)
-    );
-  }, []);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-  console.log(top5Products);
+  useEffect(() => {
+    setIsLoading(true);
+    DashboardService.getTop5ProductsByMonth(6, 2023)
+      .then((response: Top5ProductsByMonth[]) => {
+        setTop5Products(response);
+        setError(false);
+      })
+      .catch(() => setError(true))
+      .finally(() => setIsLoading(false));
+  }, []);
 
   return (
     <div className="max-w-2xl">
       <TableContainer component={Paper}>
-        <Table sx={{ maxWidth: 672 }}>
+        <Table sx={{ minWidth: 672 }}>
           <TableHead>
             <TableRow>
               <TableCell
@@ -53,16 +59,26 @@ export const Top5Products = (): JSX.Element => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {top5Products ? (
-              top5Products.map((product) => (
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={3} align="center">
+                  <Spinner />
+                </TableCell>
+              </TableRow>
+            ) : error ? (
+              <TableRow>
+                <TableCell colSpan={3} align="center">
+                  Error al obtener los datos
+                </TableCell>
+              </TableRow>
+            ) : (
+              top5Products?.map((product) => (
                 <TableRow key={product.id} hover>
                   <TableCell>{product.id}</TableCell>
                   <TableCell>{product.nombre}</TableCell>
-                  <TableCell>{product.cantidadTotal}</TableCell>
+                  <TableCell align="center">{product.cantidadTotal}</TableCell>
                 </TableRow>
               ))
-            ) : (
-              <Spinner />
             )}
           </TableBody>
         </Table>

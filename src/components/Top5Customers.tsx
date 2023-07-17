@@ -18,19 +18,26 @@ export const Top5Customers = (): JSX.Element => {
   const [top5Customers, setTop5Customers] = useState<
     Top5CustomersByMonth[] | null
   >(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    DashboardService.getTop5CustomersByMonth(6, 2023).then(
-      (response: Top5CustomersByMonth[]) => setTop5Customers(response)
-    );
+    setIsLoading(true);
+    DashboardService.getTop5CustomersByMonth(6, 2023)
+      .then((response: Top5CustomersByMonth[]) => {
+        setTop5Customers(response);
+        setError(false);
+      })
+      .catch(() => {
+        setError(true);
+      })
+      .finally(() => setIsLoading(false));
   }, []);
-
-  console.log(top5Customers);
 
   return (
     <div className="max-w-md">
       <TableContainer component={Paper}>
-        <Table sx={{ maxWidth: 448 }}>
+        <Table sx={{ minWidth: 448 }}>
           <TableHead>
             <TableRow>
               <TableCell
@@ -53,8 +60,20 @@ export const Top5Customers = (): JSX.Element => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {top5Customers ? (
-              top5Customers.map((customer) => (
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={3} align="center">
+                  <Spinner />
+                </TableCell>
+              </TableRow>
+            ) : error ? (
+              <TableRow>
+                <TableCell colSpan={3} align="center">
+                  Error al obtener los datos
+                </TableCell>
+              </TableRow>
+            ) : (
+              top5Customers?.map((customer) => (
                 <TableRow key={customer.id} hover>
                   <TableCell>{customer.id}</TableCell>
                   <TableCell>
@@ -63,8 +82,6 @@ export const Top5Customers = (): JSX.Element => {
                   <TableCell>{formatCurrency(customer.montoTotal)}</TableCell>
                 </TableRow>
               ))
-            ) : (
-              <Spinner />
             )}
           </TableBody>
         </Table>

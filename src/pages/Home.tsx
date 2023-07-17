@@ -98,7 +98,7 @@ export const Home = (): JSX.Element => {
 
   return (
     <>
-      <div>
+      <div className="flex flex-col gap-10">
         Home
         <div className="flex flex-wrap justify-center gap-3">
           {cards.map((card, i) => (

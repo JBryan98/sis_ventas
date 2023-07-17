@@ -12,7 +12,7 @@ import { useAlert } from "../hooks/useAlert";
 import CustomerService from "../services/CustomerService";
 import { Customer } from "../interfaces/Customer.interface";
 import InvoiceService from "../services/InvoiceService";
-import MUIDataTable, { MUIDataTableMeta } from "mui-datatables";
+import MUIDataTable, { MUIDataTableData, MUIDataTableMeta } from "mui-datatables";
 import { customerInvoicesTableColumn } from "../utils/mui-datatable-columns/customerInvoicesTableColumns";
 import { options } from "../utils/muiDatatableOptions";
 import { formatCurrency } from "../utils/formatCurrency";
@@ -54,7 +54,7 @@ export const CustomerInvoices = (): JSX.Element => {
       filter: false,
       sort: false,
       customBodyRender: (
-        value: any,
+        _value: MUIDataTableData,
         tableMeta: MUIDataTableMeta
       ): JSX.Element => {
         const facturaId =
