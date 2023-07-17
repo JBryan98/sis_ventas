@@ -2,6 +2,7 @@ export { CategoriasPage } from "./CategoriasPage";
 export { ClientesPage } from "./ClientesPage";
 export { CrearFacturaPage } from "./CrearFacturaPage";
 export { DetallesFacturaPage } from "./DetallesFacturaPage";
+export { FormularioCategoriaPage } from "./FormularioCategoriaPage";
 export { FacturasClientePage } from "./FacturasClientePage";
 export { FormularioClientePage } from "./FormularioClientePage";
 export { FormularioProductoPage } from "./FormularioProductoPage";

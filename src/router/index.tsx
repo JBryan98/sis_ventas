@@ -6,6 +6,7 @@ import {
   CrearFacturaPage,
   DetallesFacturaPage,
   FacturasClientePage,
+  FormularioCategoriaPage,
   FormularioClientePage,
   FormularioProductoPage,
   Home,
@@ -27,6 +28,14 @@ export const router = createBrowserRouter([
       {
         path: "categorias",
         element: <CategoriasPage/>
+      },
+      {
+        path: "categorias/crear-categoria",
+        element: <FormularioCategoriaPage/>
+      },
+      {
+        path: "categorias/actualizar-categoria/:categoryId",
+        element: <FormularioCategoriaPage/>
       },
       //PRODUCTOS
       {

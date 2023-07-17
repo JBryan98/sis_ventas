@@ -19,7 +19,7 @@ const Categories = (): JSX.Element => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     CategoryService.getAllCategories()
       .then((response: Category[]) => setCategories(response))
       .catch((error) => console.log(error))
@@ -58,26 +58,30 @@ const Categories = (): JSX.Element => {
         const categoryId = categories && categories[tableMeta.rowIndex].id;
         return (
           <>
-            <Link
-              to={`/actualizar-categoria/${categoryId}`}
-              className="text-white bg-sky-500 py-1 px-3 mr-2 hover:bg-sky-700 hover:cursor-pointer inline-flex items-center rounded"
-              title="Editar"
-            >
-              <RiEditLine className="inline-block mr-0.5 text-xl" />
-            </Link>
-            <button
-              onClick={() => {
-                handleOpen();
-                setCategoryId(categoryId);
-              }}
-              className="text-white bg-red-500 py-1 px-3 hover:cursor-pointer hover:bg-red-700 inline-flex items-center rounded"
-              title="Eliminar"
-            >
-              <RiDeleteBinLine
-                className="inline-block mr-0.5 text-xl"
-                title="Eliminar"
-              />
-            </button>
+            {categoryId && (
+              <div>
+                <Link
+                  to={`/categorias/actualizar-categoria/${categoryId}`}
+                  className="text-white bg-sky-500 py-1 px-3 mr-2 hover:bg-sky-700 hover:cursor-pointer inline-flex items-center rounded"
+                  title="Editar"
+                >
+                  <RiEditLine className="inline-block mr-0.5 text-xl" />
+                </Link>
+                <button
+                  onClick={() => {
+                    handleOpen();
+                    setCategoryId(categoryId);
+                  }}
+                  className="text-white bg-red-500 py-1 px-3 hover:cursor-pointer hover:bg-red-700 inline-flex items-center rounded"
+                  title="Eliminar"
+                >
+                  <RiDeleteBinLine
+                    className="inline-block mr-0.5 text-xl"
+                    title="Eliminar"
+                  />
+                </button>
+              </div>
+            )}
           </>
         );
       },
@@ -87,26 +91,26 @@ const Categories = (): JSX.Element => {
   const categoryTableOptions = {
     ...options,
     textLabels: {
-        ...options.textLabels,
-        body: {
-          ...options.textLabels?.body,
-          noMatch: isLoading ? (
-            <Spinner />
-          ) : (
-            'Lo sentimos, no se encontraron registros coincidentes"'
-          ),
-        },
+      ...options.textLabels,
+      body: {
+        ...options.textLabels?.body,
+        noMatch: isLoading ? (
+          <Spinner />
+        ) : (
+          'Lo sentimos, no se encontraron registros coincidentes"'
+        ),
       },
+    },
     customToolbar: () => {
       return (
-          <Button
-            onClick={() => navigate("/categorias/crear-categoria")}
-            variant="contained"
-            color="success"
-          >
-            <RiAddCircleLine className="text-xl mr-0.5 mb-0.5" />
-            Crear Categoría
-          </Button>
+        <Button
+          onClick={() => navigate("/categorias/crear-categoria")}
+          variant="contained"
+          color="success"
+        >
+          <RiAddCircleLine className="text-xl mr-0.5 mb-0.5" />
+          Crear Categoría
+        </Button>
       );
     },
   };
@@ -116,9 +120,13 @@ const Categories = (): JSX.Element => {
       <Container fixed sx={{ paddingTop: 5 }}>
         <MUIDataTable
           title="Lista de categorías"
-          data={!categories ? [] : categories.map((category) => {
-            return [category.id, category.nombre];
-          })}
+          data={
+            !categories
+              ? []
+              : categories.map((category) => {
+                  return [category.id, category.nombre];
+                })
+          }
           columns={[...categoryTableColumns, columnActions]}
           options={categoryTableOptions}
         />
