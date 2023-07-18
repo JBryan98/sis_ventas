@@ -33,9 +33,9 @@ export const InvoiceForm = () => {
     idProducto: 0,
     nombre: "",
     precioUnitario: 0,
-    cantidad: 0,
+    cantidad: "",
     monto: 0,
-    stock: 0,
+    stock: "",
   };
 
   const addItem = (product: Item) => {
@@ -57,7 +57,8 @@ export const InvoiceForm = () => {
   const updatePrice = (products: Item[]) => {
     let subTotal = 0;
     products.forEach(
-      (product) => (subTotal += product.precioUnitario * product.cantidad)
+      (product) =>
+        (subTotal += product.precioUnitario * Number(product.cantidad))
     );
     dispatch({
       type: "UPDATE_PRICE",
@@ -71,13 +72,13 @@ export const InvoiceForm = () => {
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: (values) => {
-      const monto = values.cantidad * values.precioUnitario;
-      addItem({...values, monto})
+      const monto = Number(values.cantidad) * values.precioUnitario;
+      addItem({ ...values, monto });
     },
     validationSchema: createInvoiceValidationSchema,
   });
 
-  console.log(state)
+  console.log(state);
 
   return (
     <div>
@@ -92,14 +93,16 @@ export const InvoiceForm = () => {
                   <Autocomplete
                     options={products ? products : []}
                     getOptionLabel={(option) => option.nombre}
-                    onChange={(_, value) => {
-                      formik.setFieldValue("idProducto", value?.id);
-                      formik.setFieldValue("nombre", value?.nombre);
-                      formik.setFieldValue("stock", value?.stock);
-                      formik.setFieldValue(
-                        "precioUnitario",
-                        value?.precio
-                      );
+                    onChange={(e: React.SyntheticEvent<Element, Event>, value) => {
+                      if (value !== null) {
+                        formik.setFieldValue("idProducto", value?.id);
+                        formik.setFieldValue("nombre", value?.nombre);
+                        formik.setFieldValue("stock", value?.stock);
+                        formik.setFieldValue("precioUnitario", value?.precio);
+                      }
+                      else{
+                        formik.handleReset(e);
+                      }
                     }}
                     renderInput={(params) => (
                       <TextField
@@ -113,8 +116,7 @@ export const InvoiceForm = () => {
                         helperText={
                           formik.values.nombre === ""
                             ? "Por favor elija un producto"
-                            : formik.touched.nombre &&
-                              formik.errors.nombre
+                            : formik.touched.nombre && formik.errors.nombre
                         }
                       />
                     )}
@@ -140,6 +142,8 @@ export const InvoiceForm = () => {
                     type="number"
                     fullWidth
                     name="cantidad"
+                    disabled={formik.values.nombre === "" || formik.values.nombre === null}
+                    value={formik.values.cantidad}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={
