@@ -168,7 +168,7 @@ export const InvoiceItems = ({ state, dispatch, updatePrice, customerId }: Props
                           />
                         </TableCell>
                         <TableCell>
-                          {formatCurrency(item.precioUnitario * item.cantidad)}
+                          {formatCurrency(item.precioUnitario * Number(item.cantidad))}
                         </TableCell>
                         <TableCell>
                           <Button

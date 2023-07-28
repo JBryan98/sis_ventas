@@ -19,7 +19,7 @@ interface ProductFormValues {
   nombre: string;
   precio: "" | number;
   stock: "" | number;
-  categoria: Category;
+  categoria: Category | null;
 }
 
 export const ProductForm = (): JSX.Element => {
@@ -30,31 +30,29 @@ export const ProductForm = (): JSX.Element => {
     nombre: "",
     precio: "",
     stock: "",
-    categoria: {
-      id: 0,
-      nombre: "",
-    },
+    categoria: null,
   };
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: productValidationSchema,
     onSubmit: (values) => {
-      const product = {
+      const product: Product = {
         ...values,
         precio: Number(values.precio),
-        stock: Number(values.stock)
+        stock: Number(values.stock),
+        categoria: values.categoria || { id: 0, nombre: "" },
+      };
+
+      if (productId) {
+        ProductService.updateProduct(Number(productId), product).then(() =>
+          navigate("/productos")
+        );
+      } else {
+        ProductService.createProduct(product).then(() =>
+          navigate("/productos")
+        );
       }
-      
-      if(productId){
-        ProductService
-        .updateProduct(Number(productId), product)
-        .then(() => navigate("/productos"))
-      } else{
-        ProductService
-        .createProduct(product)
-        .then(() => navigate("/productos"))
-      }
-    }
+    },
   });
 
   useEffect(() => {
@@ -65,21 +63,25 @@ export const ProductForm = (): JSX.Element => {
 
   useEffect(() => {
     if (productId) {
-      ProductService.getProductById(Number(productId)).then((response: Product) => {
-        formik.setValues({
-          ...initialValues,
-          nombre: response.nombre,
-          precio: response.precio,
-          stock: response.stock,
-          categoria: {
-            id: response.categoria.id,
-            nombre: response.categoria.nombre,
-          },
-        });
-      });
+      ProductService.getProductById(Number(productId)).then(
+        (response: Product) => {
+          formik.setValues({
+            ...initialValues,
+            nombre: response.nombre,
+            precio: response.precio,
+            stock: response.stock,
+            categoria: {
+              id: response.categoria.id,
+              nombre: response.categoria.nombre,
+            },
+          });
+        }
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId]);
+
+  console.log(formik.values);
 
   return (
     <div className="pt-10">
@@ -136,64 +138,35 @@ export const ProductForm = (): JSX.Element => {
                 />
               </Grid>
               <Grid xs={12} item>
-                {!productId
-                  ? categories && (
-                      <Autocomplete
-                        id="combo-box-demo"
-                        options={categories}
-                        getOptionLabel={(option) => option.nombre}
-                        onChange={(_, value) => {
-                          formik.setFieldValue("categoria", value);
-                        }}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            name="categoria"
-                            label="Categoría"
-                            onBlur={formik.handleBlur}
-                            error={
-                              formik.touched.categoria &&
-                              Boolean(formik.errors.categoria)
-                            }
-                            helperText={
-                              formik.values.categoria === null
-                                ? "Por favor elija una categoria"
-                                : formik.touched.categoria?.nombre &&
-                                  formik.errors.categoria?.nombre
-                            }
-                          />
-                        )}
-                      />
-                    )
-                  : categories && (
-                      <Autocomplete
-                        id="combo-box-demo"
-                        options={categories}
-                        getOptionLabel={(option) => option.nombre}
-                        onChange={(_, value) => {
-                          formik.setFieldValue("categoria", value);
-                        }}
-                        value={formik.values.categoria}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            name="categoria"
-                            label="Categoría"
-                            onBlur={formik.handleBlur}
-                            error={
-                              formik.touched.categoria &&
-                              Boolean(formik.errors.categoria)
-                            }
-                            helperText={
-                              formik.values.categoria === null
-                                ? "Por favor elija una categoria"
-                                : formik.touched.categoria?.nombre &&
-                                  formik.errors.categoria?.nombre
-                            }
-                          />
-                        )}
+                {categories && (
+                  <Autocomplete
+                    id="combo-box-demo"
+                    options={categories}
+                    getOptionLabel={(option) => option.nombre}
+                    isOptionEqualToValue={(option, value) =>
+                      option.nombre === value.nombre
+                    }
+                    onChange={(_, value) => {
+                      formik.setFieldValue("categoria", value);
+                    }}
+                    value={formik.values.categoria}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        name="categoria"
+                        label="Categoría"
+                        onBlur={formik.handleBlur}
+                        error={
+                          formik.touched.categoria &&
+                          Boolean(formik.errors.categoria)
+                        }
+                        helperText={
+                          formik.touched.categoria && formik.errors.categoria
+                        }
                       />
                     )}
+                  />
+                )}
               </Grid>
               <Grid xs={12} sm={6} item>
                 <Button
