@@ -32,7 +32,7 @@ class ProductoService {
 
   async updateProduct(id: number, product: Product): Promise<Product> {
     try {
-      const response = await axios.put<Product>(`${PRODUCT_URL}/${id}`,product);
+      const response = await axios.put<Product>(`${PRODUCT_URL}/${id}`, product);
       return response.data;
     } catch (error) {
       throw new Error(`No se pudo actualizar el producto con id '${id}'`);
